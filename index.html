@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="YT Music Clone - Web Player">
+  <meta name="theme-color" content="#030303">
+  <title>PERSONAL MUSIC PLAYER</title>
+
+  <!-- Google Fonts: Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="logo" id="logo-home-btn" style="cursor: pointer;">
+        <i data-lucide="play-circle" class="logo-icon"></i>
+        <span>Music Player</span>
+      </div>
+    </div>
+    <div class="nav-center">
+      <div class="search-bar">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" placeholder="Search songs, albums, artists, podcasts">
+      </div>
+    </div>
+    <div class="nav-right">
+
+
+      <i data-lucide="cast" class="nav-icon"></i>
+      <div class="user-avatar">
+        <i data-lucide="user"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="app-container">
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Home View (Grid of Playlists) -->
+      <div id="home-view" class="view-container active">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2 class="section-title" style="margin-bottom: 0;">Your Playlists</h2>
+          <button class="secondary-btn" id="btn-create-playlist"><i data-lucide="plus"></i> New Playlist</button>
+        </div>
+        <div class="playlist-grid" id="playlist-grid">
+          <!-- Dynamically populated playlist cards -->
+        </div>
+
+        <h2 class="section-title" style="margin-top: 40px;">Available Tracks</h2>
+        <div class="songs-list-container">
+          <ul class="playlist-list" id="home-songs-list">
+            <!-- Dynamically populated songs for home view -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Playlist View (Single Playlist details) -->
+      <div id="playlist-view" class="view-container" style="display: none;">
+        <button class="back-btn" id="btn-back-home"><i data-lucide="arrow-left"></i> Back to Home</button>
+
+        <div class="playlist-header-area">
+          <img src="" alt="Playlist Cover" class="playlist-cover-large" id="view-playlist-cover">
+          <div class="playlist-info-large">
+            <h1 class="playlist-title" id="view-playlist-title">Playlist Title</h1>
+            <p class="playlist-subtitle" id="view-playlist-desc">Description</p>
+            <div class="playlist-actions">
+              <button class="primary-btn" id="main-play-btn"><i data-lucide="play" fill="currentColor"></i>
+                Play</button>
+              <button class="secondary-btn" id="main-shuffle-btn"><i data-lucide="shuffle"></i> Shuffle</button>
+              <button class="icon-btn" id="btn-delete-playlist" style="display: none;" aria-label="Delete Playlist"><i
+                  data-lucide="trash-2"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="songs-list-container">
+          <ul class="playlist-list" id="playlist-list">
+            <!-- Dynamically populated songs -->
+          </ul>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Up Next Sidebar (Hidden by default) -->
+    <aside class="queue-sidebar" id="queue-sidebar">
+      <div class="queue-header">
+        <h3>Up Next</h3>
+        <button class="icon-btn close-queue" id="close-queue-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <ul class="queue-list" id="queue-list">
+        <!-- Dynamically populated queue -->
+      </ul>
+    </aside>
+
+  </div>
+
+  <!-- Bottom Player Bar -->
+  <footer class="player-bar">
+    <!-- Progress Bar (spanning top of player) -->
+    <div class="progress-container">
+      <div class="progress-bar-wrapper" id="progress-bar" role="slider" aria-label="Seek" aria-valuemin="0"
+        aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-bar-fill" id="progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="player-controls-layout">
+
+      <!-- Left: Track Info -->
+      <div class="track-info">
+        <img class="track-artwork" id="artwork-image" src="" alt="Album artwork" style="display: none;">
+        <div class="track-text">
+          <div class="song-title-wrapper">
+            <span class="song-title" id="song-title">Select a track</span>
+          </div>
+          <span class="song-artist" id="song-artist"></span>
+        </div>
+
+      </div>
+
+      <!-- Center: Transport Controls -->
+      <div class="transport-controls">
+        <button class="icon-btn mode-btn" id="btn-shuffle" aria-label="Toggle shuffle">
+          <i data-lucide="shuffle"></i>
+        </button>
+        <button class="icon-btn" id="btn-prev" aria-label="Previous track">
+          <i data-lucide="skip-back" fill="currentColor"></i>
+        </button>
+        <button class="icon-btn play-btn" id="btn-play" aria-label="Play or pause">
+          <i data-lucide="play" fill="currentColor"></i>
+        </button>
+        <button class="icon-btn" id="btn-next" aria-label="Next track">
+          <i data-lucide="skip-forward" fill="currentColor"></i>
+        </button>
+        <button class="icon-btn mode-btn" id="btn-repeat" aria-label="Toggle repeat">
+          <i data-lucide="repeat"></i>
+          <span class="repeat-one-badge">1</span>
+        </button>
+      </div>
+
+      <!-- Right: Volume & Queue -->
+      <div class="right-controls">
+        <div class="time-display">
+          <span id="time-current">0:00</span> / <span id="time-duration">0:00</span>
+        </div>
+        <div class="volume-container">
+          <button class="icon-btn" id="btn-mute" aria-label="Toggle mute">
+            <i data-lucide="volume-2"></i>
+          </button>
+          <div class="volume-slider-wrapper" id="volume-bar" role="slider" aria-label="Volume">
+            <div class="volume-slider-fill" id="volume-fill" style="width: 80%;"></div>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-queue" aria-label="Toggle Queue">
+          <i data-lucide="list-music"></i>
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Audio Element -->
+  <audio id="audio-player" preload="auto"></audio>
+
+  <!-- Scripts -->
+  <!-- Add to Playlist Modal -->
+  <div id="add-to-playlist-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem; font-weight: 500;">Add to Playlist</h3>
+        <button class="icon-btn" id="close-modal-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <ul id="modal-playlist-list" class="modal-list">
+          <!-- Populated dynamically with custom playlists -->
+        </ul>
+        <button class="secondary-btn" id="modal-create-playlist-btn" style="width: 100%; margin-top: 16px;">
+          <i data-lucide="plus"></i> Create New Playlist
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=11"></script>
+</body>
+
+</html>
